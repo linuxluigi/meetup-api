@@ -131,13 +131,12 @@ class Client(object):
                 self.services[service_name] = service_details
 
     def _call(self, service_name, parameters=None, **kwargs):
-        if not self.token:
-            raise exceptions.TokenError('Meetup oauth2 token not set')
         if not parameters:
             parameters = {}
         if not isinstance(parameters, dict):
             raise exceptions.ApiParameterError('Parameters must be dict')
-        parameters['access_token'] = self.token
+        if self.token:
+            parameters['access_token'] = self.token
         for key, value in six.iteritems(kwargs):
             parameters[key] = value
 
